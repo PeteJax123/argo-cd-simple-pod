@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment-nginx
+  namespace: aks-lab-namespace
+spec:
+  replicas: 3  # You can adjust the number of replicas as needed.
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux  # To ensure it runs on Linux nodes.
+        "agentpool": labpool  # This will make it run on the "labpool" node pool.
+      containers:
+        - name: webapp-container
+          image: nginx:latest  # Using the Nginx web server image.
+          ports:
+            - containerPort: 80  # Assuming Nginx listens on port 80.
